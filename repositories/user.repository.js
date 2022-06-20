@@ -45,33 +45,40 @@ exports.addProfilePic = async (res , data , id) => {
 
 // TODO
 exports.followUser = async (res,data) => {
+
+    console.log(data)
     const fo=data.tofollow
+  
     await User.findByIdAndUpdate(
         {_id:data.userId},
-        {$push: { "following": fo }},
+        {$push: { following: fo }},
         { new: true, useFindAndModify: false },
         (err,data) => {
             if(err){
                 return RESPONSE_TYPE._400(res,false)
 
             }else{
-               this.followersFunction(res,{userId: fo , tofollow:data._id})
+                 this.followersFunction(res,{userId: fo , tofollow:data._id})
             }
         }
 
-    ).clone()
+     )
 }
 
 exports.followersFunction =  async(res,data) => {
-   await User.findByIdAndUpdate(
+        console.log(data)
+        await User.findByIdAndUpdate(
        {_id:data.userId},
-        {$push:{"followers":data.tofollow}},
-        { new: true, useFindAndModify: false },
+       {$push:{"followers":data.tofollow}},
+       { new: true, useFindAndModify: false },
        (err,data) => {
            if(err){
                return RESPONSE_TYPE._400(res,false)
            }
-            return RESPONSE_TYPE._200(res, true);
+           else
+           {
+            return RESPONSE_TYPE._200(res, {'bod':data});
+           }          
        }
 
    ).clone()
