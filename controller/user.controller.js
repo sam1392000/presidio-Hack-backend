@@ -41,13 +41,7 @@ exports.uploadProfilePic =  (req,res) => {
 exports.followUser = async (req,res) => {
     if(!req.body)
         return RESPONSE_TYPE._400(res,"User Not mentioned");
-     followUser(res,req.body).then(data => {
-        if(data.status == true){
-            return followersFunction(res,{userId:req.body.tofollow , tofollow:req.body.userId})
-        }else{
-            return RESPONSE_TYPE._400(res,"User Not mentioned");
-        }
-     })
+    return followUser(res,req.body)
     // console.log(data.status);
     
 }
