@@ -59,3 +59,16 @@ exports.savePostRepo = async (res,{fields,files}) => {
         return RESPONSE_TYPE._200(res,data);
     })
 }
+exports.getSinglePost = (res,id) => {
+    Post
+        .findById(id)
+        .populate("comments")
+        // .populate("user")
+        .exec()
+        .then(post => {
+            return RESPONSE_TYPE._200(res,post)
+        })
+        .catch(err => {
+            return RESPONSE_TYPE._400(res,"No post with this id");
+        })
+}

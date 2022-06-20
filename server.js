@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const postRoutes = require("./routes/posts.routes")
 const userRoutes = require('./routes/user.routes')
+const commentRoutes = require('./routes/comment.routes')
 
 // db Connection
 const db = process.env.DB;
@@ -25,7 +26,7 @@ app.use(cors())
 app.use(express.json())
 app.use("/api",postRoutes)
 app.use("/api",userRoutes)
-
+app.use('/api',commentRoutes)
 const PORT  = process.env.PORT || 5000;
 app.listen(PORT , () => {
     console.log(`Server start running at the port ${PORT}`)
