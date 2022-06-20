@@ -127,3 +127,14 @@ exports.HomefeedPosts =  async(res,data) => {
     }
  }).populate("user")
 }
+
+exports.publicPosts =  async(res,data) => {
+    Post.find({"accessibility":"public"},function(err, result) {
+       if (err) throw err;      
+      
+         console.log(result);
+       
+    })
+   }
+   
+
