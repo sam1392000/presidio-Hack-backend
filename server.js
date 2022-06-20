@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const postRoutes = require("./routes/posts.routes")
 const userRoutes = require('./routes/user.routes')
 const commentRoutes = require('./routes/comment.routes')
+
 // db Connection
 const db = process.env.DB;
 mongoose.connect(db,{

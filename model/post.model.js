@@ -12,7 +12,7 @@ const postSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"User"
     },
-    comments:[String],
+    comments:[{type:Schema.Types.ObjectId,ref:"Comment"}],
     likes:[{type:Schema.Types.ObjectId,ref:"User"}],
     accessibility:{
         type:String,
@@ -20,5 +20,7 @@ const postSchema = new Schema({
         default:'public'
     }
 },{timestamps:true})
+
+
 
 module.exports = mongoose.model("Post",postSchema)
