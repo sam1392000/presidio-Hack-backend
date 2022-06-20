@@ -4,6 +4,7 @@ const RESPONSE_TYPE = require("../utilities/responseTypes");
 const AWS = require('aws-sdk')
 const fs = require('fs');
 const { post } = require("../routes/user.routes");
+const { noEmptyFiles } = require("formidable/FormidableError");
 const s3 = new AWS.S3({
     accessKeyId: process.env.SECRET_KEY_ID,
     secretAccessKey:process.env.SECRET_ACCESS_KEY_ID
@@ -108,6 +109,7 @@ exports.Homefeed =  async(res,data) => {
             const following =data.following
             console.log(following.length);
             following.forEach(element => {
+                console.log(element);
                  this.HomefeedPosts(res,element);
               });
             
@@ -117,18 +119,10 @@ exports.Homefeed =  async(res,data) => {
 }
 
 exports.HomefeedPosts =  async(res,data) => {
-    Post.find({user:data},{ projection: { postUrl: 1,accessibility:1,comments:1,likes:1,description:1} }).exec((err,data)=>{
-        if(err)
-        {
-           return RESPONSE_TYPE._400(res,err)
-        }
-        else
-          {
-
-            console.log(data.postUrl)
-            
-            
-           return RESPONSE_TYPE._200(res,data);
-          }   
-    })
+ Post.find({"accessibility":"private",user:data}, function(err, result) {
+    if (err) throw err;
+    if(result){
+      console.log(result);
+    }
+ });
 }
