@@ -1,6 +1,6 @@
 const formidable = require('formidable')
 const RESPONSE_TYPE = require('../utilities/responseTypes');
-const { addUser, updateProfile, addProfilePic, followUser , followersFunction} = require("../repositories/user.repository");
+const { addUser, updateProfile, addProfilePic, followUser , followersFunction,profieDesc,Homefeed} = require("../repositories/user.repository");
 
 
 exports.registerUser = (req,res) => {
@@ -41,7 +41,31 @@ exports.uploadProfilePic =  (req,res) => {
 exports.followUser = async (req,res) => {
     if(!req.body)
         return RESPONSE_TYPE._400(res,"User Not mentioned");
-    return followUser(res,req.body)
+     followUser(res,req.body).then(data => {
+        if(data.status == true){
+            return followersFunction(res,{userId:req.body.tofollow , tofollow:req.body.userId})
+        }else{
+            return RESPONSE_TYPE._400(res,"User Not mentioned");
+        }
+     })
+    // console.log(data.status);
+    
+}
+exports.profileDesc = async (req,res) => {
+    if(!req.body)
+        return RESPONSE_TYPE._400(res,"User Not mentioned");
+    console.log(req.params.id);
+    return profieDesc(res,req.params.id);
+
+    // console.log(data.status);
+    
+}
+exports.Home = async (req,res) => {
+    if(!req.body)
+        return RESPONSE_TYPE._400(res,"User Not mentioned");
+    console.log(req.params.id);
+    return Homefeed(res,req.params.id);
+
     // console.log(data.status);
     
 }
