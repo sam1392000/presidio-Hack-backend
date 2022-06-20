@@ -9,5 +9,5 @@ router.put('/updateprofile',updateProfile)
 // TODO Following followers part 
 router.post('/follow/user',followUser)
 router.get('/profile/:id',profileDesc)
-router.get('/Home/:id',Home)
+router.get('/home/:id',Home)
 module.exports = router;
