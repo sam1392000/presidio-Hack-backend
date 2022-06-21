@@ -2,7 +2,6 @@ const express = require('express')
 
 const {registerUser , updateProfile , uploadProfilePic , followUser,profileDesc,Home,getSingleUser,publicPosts,selfPosts,likepost,selfPostslen} = require('../controller/user.controller')
 
-
 const router = express.Router();
 
 router.post('/adduser',registerUser)
@@ -15,6 +14,7 @@ router.get('/profile/:id',profileDesc)
 
 
 router.get('/get/user/:name',getSingleUser)
+router.get('/get/ddb',getUserFromDB)
 
 router.get('/home/:id',Home)
 router.get('/publicposts/',publicPosts)

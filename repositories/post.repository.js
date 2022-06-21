@@ -36,10 +36,16 @@ exports.getSinglePost = (res,id) => {
         // .populate("user")
         .exec()
         .then(post => {
-            return RESPONSE_TYPE._200(res,post)
+            post.populate("user").then(data => {
+                return RESPONSE_TYPE._200(res,data)
+            })
+            .catch(err => {
+                return RESPONSE_TYPE._400(res,"No use")
+            })
+           
         })
         .catch(err => {
-            return RESPONSE_TYPE._400(res,"No post with this id");
+            return RESPONSE_TYPE._400(res,err);
         })
 
 exports.likePost = async (res,data) => {
