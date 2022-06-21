@@ -220,6 +220,21 @@ exports.publicPosts =  async(res,data) => {
        
     })
    }
+
+   exports.selfPosts =  async(res,data) => {
    
+    Post.find({user:data}).exec((err,data)=>{
+                if(err)
+                {
+                   return RESPONSE_TYPE._400(res,err)
+                }
+                else
+                  {
+                      console.log(data)
+                    return RESPONSE_TYPE._200(res,data)
+                  }
+
+   })
+}
 
 
