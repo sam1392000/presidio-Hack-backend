@@ -97,38 +97,85 @@ exports.profieDesc =  async(res,data) => {
            }   
      })
 }
-exports.Homefeed =  async(res,data) => {
-    User.findById(data).exec((err,data)=>{
-        if(err)
-        {
-           return RESPONSE_TYPE._400(res,err)
-        }
-        else
-          {
-            const following =data.following
-            console.log(following.length);
-            following.forEach(element => {
-                 this.HomefeedPosts(res,element);
-              });
-            
-           return RESPONSE_TYPE._200(res,data);
-          }   
-    })
+// exports.Homefeed =  async(res,data) => {
+//     let post = [];
+//     await User.findById(data).exec((err,data)=>{
+//         if(err)
+//         {
+//            return RESPONSE_TYPE._400(res,err)
+//         }
+//         else
+//           {
+//             const following =data.following
+//             console.log(following.length);
+//             following.forEach( async element => {
+//                   await this.HomefeedPosts(res,element).then( val => {
+//                     console.log(val)
+//                     post.concat(val);
+//                     //return RESPONSE_TYPE._200(res,val);
+//                  })
+//               });
+//               //post.push(2)
+//             // console.log("Post "+post)
+//            return RESPONSE_TYPE._200(res,post);
+//           }   
+//     })
+// }
+
+// exports.HomefeedPosts =  async(res,data) => {
+//    return Post
+//     .find({user:data},{ projection: { postUrl: 1,accessibility:1,comments:1,likes:1,description:1} })
+//     .populate("user")
+//     .exec()
+//     .then(data => {
+//         return data;
+//     })
+//     .catch(err => {
+//         return RESPONSE_TYPE._400(res,"Error");
+//     })
+    
+// }
+
+exports.Homefeed = async (res,data) => {
+   await User
+        .findById(data)
+        .exec()
+        .then(data => {
+            // console.log(data.following)
+           return this.findFollowersPost(res,data.following);
+        })
+        .catch(err => {
+            return RESPONSE_TYPE._400(res,"No user with this id");
+        })
 }
 
-exports.HomefeedPosts =  async(res,data) => {
-    Post.find({user:data},{ projection: { postUrl: 1,accessibility:1,comments:1,likes:1,description:1} }).exec((err,data)=>{
-        if(err)
-        {
-           return RESPONSE_TYPE._400(res,err)
-        }
-        else
-          {
-
-            console.log(data.postUrl)
-            
-            
-           return RESPONSE_TYPE._200(res,data);
-          }   
+exports.findFollowersPost = async (res,following) => {
+    var following_String = [];
+    await following.map(data => {
+        following_String.push(data.toString());
     })
+       await Post
+            .find({ projection: { postUrl: 1,accessibility:1,comments:1,likes:1,description:1,emailid:0,followers:0,following:0,userid:0} })
+            .populate("user")
+            .where('user').in(following_String)
+            .exec()
+            .then(data => {
+               return RESPONSE_TYPE._200(res,data);
+            }).catch(err => {
+                return RESPONSE_TYPE._400(res,"No Post...")
+            })
+    
+
+}
+ 
+exports.getSingleUser = (res,value) => {
+    User
+        .find({"name":{'$regex':'^'+value,$options:'i'}})
+        .exec()
+        .then(data => {
+            return RESPONSE_TYPE._200(res,data)
+        }) 
+        .catch(err => {
+            return RESPONSE_TYPE._400(res,"No user with this name")
+        })
 }
