@@ -3,7 +3,8 @@ const Post = require("../model/post.model");
 const RESPONSE_TYPE = require("../utilities/responseTypes");
 const AWS = require('aws-sdk')
 const fs = require('fs');
-const { post } = require("../routes/user.routes");
+
+
 const s3 = new AWS.S3({
     accessKeyId: process.env.SECRET_KEY_ID,
     secretAccessKey:process.env.SECRET_ACCESS_KEY_ID
@@ -97,6 +98,7 @@ exports.profieDesc =  async(res,data) => {
            }   
      })
 }
+
 // exports.Homefeed =  async(res,data) => {
 //     let post = [];
 //     await User.findById(data).exec((err,data)=>{
@@ -179,3 +181,45 @@ exports.getSingleUser = (res,value) => {
             return RESPONSE_TYPE._400(res,"No user with this name")
         })
 }
+
+// exports.Homefeed =  async(res,data) => {
+//     User.findById(data).exec((err,data)=>{
+//         if(err)
+//         {
+//            return RESPONSE_TYPE._400(res,err)
+//         }
+//         else
+//           {
+//             const following =data.following
+          
+//             following.forEach(element => {
+               
+//                  this.HomefeedPosts(res,element);
+//               });
+//               return RESPONSE_TYPE._200(res,data)
+          
+//           }   
+//     })
+// }
+
+// exports.HomefeedPosts =  async(res,data) => {
+//  Post.find({"accessibility":"private",user:data},function(err, result) {
+//     if (err) throw err;
+    
+//     if(Object.entries(result).length !== 0){
+//       console.log(result);
+//     }
+//  }).populate("user")
+// }
+
+exports.publicPosts =  async(res,data) => {
+    Post.find({"accessibility":"public"},function(err, result) {
+       if (err) throw err;      
+      
+         console.log(result);
+       
+    })
+   }
+   
+
+

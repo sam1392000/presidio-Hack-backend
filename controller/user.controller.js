@@ -1,6 +1,8 @@
 const formidable = require('formidable')
 const RESPONSE_TYPE = require('../utilities/responseTypes');
-const { addUser, updateProfile, addProfilePic, followUser , followersFunction,profieDesc,Homefeed,getSingleUser} = require("../repositories/user.repository");
+
+const { addUser, updateProfile, addProfilePic, followUser , followersFunction,profieDesc,Homefeed,getSingleUser,publicPosts} = require("../repositories/user.repository");
+
 
 
 exports.registerUser = (req,res) => {
@@ -70,9 +72,19 @@ exports.Home = async (req,res) => {
     
 }
 
+
 exports.getSingleUser = (req,res) => {
     let value = req.params.name;
     if(!value)
         return RESPONSE_TYPE._400(res,"no query param..")
     return getSingleUser(res,value);
+
+exports.publicPosts = async (req,res) => {
+    if(!req.body)
+        return RESPONSE_TYPE._400(res,"User Not mentioned");
+    
+    return publicPosts(res,req.body);
+
+    // console.log(data.status);
+ 
 }
