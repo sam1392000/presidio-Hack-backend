@@ -43,7 +43,7 @@ exports.getSinglePost = (res,id) => {
         })
 
 exports.likePost = async (res,data) => {
-  
+    console.log(data)
     await Post.findByIdAndUpdate(
         {_id:data.postid},
         {$push:{"likes":data.userid}},

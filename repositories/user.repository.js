@@ -213,28 +213,82 @@ exports.getSingleUser = (res,value) => {
 // }
 
 exports.publicPosts =  async(res,data) => {
-    Post.find({"accessibility":"public"},function(err, result) {
-       if (err) throw err;      
+
+    Post.find({"accessibility":"public","postUrl":{$ne:" "}},function(err, result) {
+       if (err) throw err;
+
         console.log(result);
          return RESPONSE_TYPE._200(res,result);
        
     })
    }
-
-   exports.selfPosts =  async(res,data) => {
+exports.selfPosts =  async(res,data) => {
    
-    Post.find({user:data}).exec((err,data)=>{
+    Post.find({user:data}).populate("user").exec((err,data)=>{
                 if(err)
                 {
                    return RESPONSE_TYPE._400(res,err)
                 }
                 else
-                  {
-                      console.log(data)
-                    return RESPONSE_TYPE._200(res,data)
+                  { 
+                      const resp={
+                          followersLength : data[0].user.followers.length,
+                          followingLength : data[0].user.following.length,
+                          posts:data.length,                
+                          actualdata:data
+                      }
+                      console.log(resp)
+                    return RESPONSE_TYPE._200(res,resp)
                   }
 
    })
 }
+exports.selfPostslen =  async(res,data) => {
+   
+    const length=Post.find({user:data})
 
 
+   }
+
+
+exports.likepost =  async(res,data) => {
+   const val= await Post.find({_id:data.postid, likes: {"$in": [data.userid]}})
+    
+    if(val.length === 0)
+    {
+      
+await Post.findByIdAndUpdate(
+    {_id:data.postid},
+    
+    
+      {$push:{"likes":data.userid}},
+  
+    { new: true, useFindAndModify: false },
+    (err,data) => {
+        if(err){
+            return RESPONSE_TYPE._400(res,{'status':err})
+        }
+        else
+        {
+         return RESPONSE_TYPE._200(res, {'bod':data});
+        }          
+    }
+)
+    }
+else{
+await Post.findByIdAndUpdate(
+    {_id:data.postid},    
+    {$pull:{"likes":data.userid}},
+    { new: true, useFindAndModify: false },
+    (err,data) => {
+        if(err){
+            return RESPONSE_TYPE._400(res,{'status':err})
+        }
+        else
+        {
+         return RESPONSE_TYPE._200(res, {'bod':data});
+        }          
+    }
+)
+}
+}

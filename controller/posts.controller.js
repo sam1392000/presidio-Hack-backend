@@ -1,7 +1,7 @@
 const formidable = require('formidable');
 
-const { savePostRepo , getSinglePost } = require('../repositories/post.repository');
-const { likePost } = require('../repositories/post.repository');
+const { savePostRepo , getSinglePost,likePost} = require('../repositories/post.repository');
+
 
 const RESPONSE_TYPE = require('../utilities/responseTypes');
 exports.savePost = (req,res) => {

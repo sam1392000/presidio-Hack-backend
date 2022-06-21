@@ -1,6 +1,6 @@
 const express = require('express')
 
-const {registerUser , updateProfile , uploadProfilePic , followUser,profileDesc,Home,getSingleUser,publicPosts,selfPosts} = require('../controller/user.controller')
+const {registerUser , updateProfile , uploadProfilePic , followUser,profileDesc,Home,getSingleUser,publicPosts,selfPosts,likepost,selfPostslen} = require('../controller/user.controller')
 
 
 const router = express.Router();
@@ -14,12 +14,14 @@ router.post('/follow/user',followUser)
 router.get('/profile/:id',profileDesc)
 
 
-
 router.get('/get/user/:name',getSingleUser)
-
 
 router.get('/home/:id',Home)
 router.get('/publicposts/',publicPosts)
 router.get('/selfposts/:id',selfPosts)
+router.post('/like/',likepost)
+router.get('/selfpostslen/:id',selfPostslen)
+
+
 
 module.exports = router;
