@@ -1,12 +1,14 @@
 const formidable = require('formidable')
 const RESPONSE_TYPE = require('../utilities/responseTypes');
-const { addUser, updateProfile, addProfilePic, followUser , followersFunction,profieDesc,Homefeed,getSingleUser} = require("../repositories/user.repository");
+
+const { addUser, updateProfile, addProfilePic, followUser , followersFunction,profieDesc,Homefeed,getSingleUser,publicPosts,selfPosts,likepost,selfPostslen} = require("../repositories/user.repository");
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'us-east-1'});
 var ddb = new AWS.DynamoDB({
     accessKeyId: process.env.SECRET_KEY_ID,
     secretAccessKey:process.env.SECRET_ACCESS_KEY_ID
 });
+
 
 exports.registerUser = (req,res) => {
     var form = new formidable.IncomingForm();
@@ -75,12 +77,14 @@ exports.Home = async (req,res) => {
     
 }
 
+
 exports.getSingleUser = (req,res) => {
     let value = req.params.name;
     if(!value)
         return RESPONSE_TYPE._400(res,"no query param..")
     return getSingleUser(res,value);
 }
+
 
 exports.getUserFromDB = (req,res) => {
     var params = {
@@ -99,3 +103,36 @@ exports.getUserFromDB = (req,res) => {
         }
       });
 }
+
+exports.publicPosts = async (req,res) => {
+    if(!req.body)
+        return RESPONSE_TYPE._400(res,"User Not mentioned");
+    
+    return publicPosts(res,req.body);
+
+    // console.log(data.status);
+}
+exports.selfPosts = async (req,res) => {
+    if(!req.body)
+        return RESPONSE_TYPE._400(res,"User Not mentioned");
+    
+    return selfPosts(res,req.params.id);   
+
+}
+exports.likepost = async (req,res) => {
+    if(!req.body)
+        return RESPONSE_TYPE._400(res,"User Not mentioned");
+    
+    return likepost(res,req.body);
+
+    // console.log(data.status);
+}
+
+exports.selfPostslen = async (req,res) => {
+    if(!req.body)
+        return RESPONSE_TYPE._400(res,"User Not mentioned");
+    
+    return selfPostslen(res,req.params.id);   
+
+}
+
