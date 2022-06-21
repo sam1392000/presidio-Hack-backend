@@ -215,8 +215,8 @@ exports.getSingleUser = (res,value) => {
 exports.publicPosts =  async(res,data) => {
     Post.find({"accessibility":"public"},function(err, result) {
        if (err) throw err;      
-      
-         console.log(result);
+        console.log(result);
+         return RESPONSE_TYPE._200(res,result);
        
     })
    }
