@@ -1,6 +1,6 @@
 const express = require('express')
 
-const {registerUser , updateProfile , uploadProfilePic , followUser,profileDesc,Home,getSingleUser,publicPosts} = require('../controller/user.controller')
+const {registerUser , updateProfile , uploadProfilePic , followUser,profileDesc,Home,getSingleUser,publicPosts,selfPosts} = require('../controller/user.controller')
 
 
 const router = express.Router();
@@ -20,5 +20,6 @@ router.get('/get/user/:name',getSingleUser)
 
 router.get('/home/:id',Home)
 router.get('/publicposts/',publicPosts)
+router.get('/selfposts/:id',selfPosts)
 
 module.exports = router;
