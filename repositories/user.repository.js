@@ -252,12 +252,12 @@ exports.selfPostslen =  async(res,data) => {
 
 
 exports.likepost =  async(res,data) => {
-   const val= await Post.find({_id:data.postid, likes: {"$in": [data.userid]}})
+   const val= Post.find({_id:data.postid, likes: {"$in": [data.userid]}})
     
     if(val.length === 0)
     {
       
-await Post.findByIdAndUpdate(
+   Post.findByIdAndUpdate(
     {_id:data.postid},
     
     
@@ -276,7 +276,7 @@ await Post.findByIdAndUpdate(
 )
     }
 else{
-await Post.findByIdAndUpdate(
+ Post.findByIdAndUpdate(
     {_id:data.postid},    
     {$pull:{"likes":data.userid}},
     { new: true, useFindAndModify: false },
