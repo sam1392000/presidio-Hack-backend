@@ -42,22 +42,5 @@ exports.getSinglePost = (res,id) => {
             return RESPONSE_TYPE._400(res,"No post with this id");
         })
 
-exports.likePost = async (res,data) => {
-    console.log(data)
-    await Post.findByIdAndUpdate(
-        {_id:data.postid},
-        {$push:{"likes":data.userid}},
-        { new: true, useFindAndModify: false },
-        (err,data) => {
-            if(err){
-                return RESPONSE_TYPE._400(res,{'status':err})
-            }
-            else
-            {
-             return RESPONSE_TYPE._200(res, {'bod':data});
-            }          
-        }
-    )
-    
-}
+
 }
