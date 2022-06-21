@@ -182,6 +182,8 @@ exports.getSingleUser = (res,value) => {
         })
 }
 
+
+
 // exports.Homefeed =  async(res,data) => {
 //     User.findById(data).exec((err,data)=>{
 //         if(err)
@@ -252,12 +254,18 @@ exports.selfPostslen =  async(res,data) => {
 
 
 exports.likepost =  async(res,data) => {
+
    const val=await Post.find({_id:data.postid, likes: {"$in": [data.userid]}}).clone();
+
+   
+
     
     if(val.length === 0)
     {
       
+
         await  Post.findByIdAndUpdate(
+
     {_id:data.postid},
     
     
@@ -276,7 +284,7 @@ exports.likepost =  async(res,data) => {
 ).clone();
     }
 else{
-await Post.findByIdAndUpdate(
+ Post.findByIdAndUpdate(
     {_id:data.postid},    
     {$pull:{"likes":data.userid}},
     { new: true, useFindAndModify: false },

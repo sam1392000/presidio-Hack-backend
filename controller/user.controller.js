@@ -2,7 +2,12 @@ const formidable = require('formidable')
 const RESPONSE_TYPE = require('../utilities/responseTypes');
 
 const { addUser, updateProfile, addProfilePic, followUser , followersFunction,profieDesc,Homefeed,getSingleUser,publicPosts,selfPosts,likepost,selfPostslen} = require("../repositories/user.repository");
-
+var AWS = require('aws-sdk');
+AWS.config.update({region: 'us-east-1'});
+var ddb = new AWS.DynamoDB({
+    accessKeyId: process.env.SECRET_KEY_ID,
+    secretAccessKey:process.env.SECRET_ACCESS_KEY_ID
+});
 
 
 exports.registerUser = (req,res) => {
@@ -79,6 +84,26 @@ exports.getSingleUser = (req,res) => {
         return RESPONSE_TYPE._400(res,"no query param..")
     return getSingleUser(res,value);
 }
+
+
+exports.getUserFromDB = (req,res) => {
+    var params = {
+        TableName: 'Users',
+        Key: {
+          'id': {N: '1'}
+        },
+       // ProjectionExpression: 'ATTRIBUTE_NAME'
+      };
+
+      ddb.getItem(params, function(err, data) {
+        if (err) {
+          console.log("Error", err);
+        } else {
+          console.log("Success", data.Item.name);
+        }
+      });
+}
+
 exports.publicPosts = async (req,res) => {
     if(!req.body)
         return RESPONSE_TYPE._400(res,"User Not mentioned");
@@ -110,3 +135,4 @@ exports.selfPostslen = async (req,res) => {
     return selfPostslen(res,req.params.id);   
 
 }
+

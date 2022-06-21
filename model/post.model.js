@@ -3,10 +3,12 @@ const {Schema} = mongoose;
 
 const postSchema = new Schema({
     postUrl:{
-        type:String
+        type:String,
+        default:""
     },
     description:{
-        type:String
+        type:String,
+        default:""
     },
     user:{
         type:Schema.Types.ObjectId,
