@@ -2,7 +2,7 @@ const express = require('express')
 
 const {savePost , getPost} = require("../controller/posts.controller")
 
-const {savePost,likePost} = require("../controller/posts.controller");
+const {likePost} = require("../controller/posts.controller");
 
 
 const router = express.Router();

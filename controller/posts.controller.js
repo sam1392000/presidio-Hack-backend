@@ -1,7 +1,7 @@
 const formidable = require('formidable');
 
 const { savePostRepo , getSinglePost } = require('../repositories/post.repository');
-const { savePostRepo,likePost } = require('../repositories/post.repository');
+const { likePost } = require('../repositories/post.repository');
 
 const RESPONSE_TYPE = require('../utilities/responseTypes');
 exports.savePost = (req,res) => {
@@ -20,6 +20,7 @@ exports.getPost = (req,res) =>{
     if(!id)
         return RESPONSE_TYPE._400(res,"No id found")
    return getSinglePost(res,id)
+}
 
 exports.likePost = (req,res) => {
     if(!req.body)

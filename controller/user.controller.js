@@ -78,7 +78,7 @@ exports.getSingleUser = (req,res) => {
     if(!value)
         return RESPONSE_TYPE._400(res,"no query param..")
     return getSingleUser(res,value);
-
+}
 exports.publicPosts = async (req,res) => {
     if(!req.body)
         return RESPONSE_TYPE._400(res,"User Not mentioned");
@@ -86,5 +86,5 @@ exports.publicPosts = async (req,res) => {
     return publicPosts(res,req.body);
 
     // console.log(data.status);
- 
+
 }

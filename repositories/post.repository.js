@@ -59,5 +59,5 @@ exports.likePost = async (res,data) => {
         }
     )
     
-
+}
 }
