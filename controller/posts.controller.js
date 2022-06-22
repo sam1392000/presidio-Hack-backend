@@ -1,6 +1,6 @@
 const formidable = require('formidable');
 
-const { savePostRepo , getSinglePost} = require('../repositories/post.repository');
+const { savePostRepo , getSinglePost,getCommentsWithNameRepo} = require('../repositories/post.repository');
 
 
 const RESPONSE_TYPE = require('../utilities/responseTypes');
@@ -22,5 +22,11 @@ exports.getPost = (req,res) =>{
    return getSinglePost(res,id)
 }
 
-
+exports.getCommentsWithName = (req,res) => {
+    const data = req.params.id;
+    if(!data)
+        return RESPONSE_TYPE._400(res,"Error Something ");
+    
+    return getCommentsWithNameRepo(res,data);
+}
 

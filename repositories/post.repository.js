@@ -2,6 +2,7 @@ const AWS = require('aws-sdk');
 const fs = require('fs');
 const Post = require('../model/post.model');
 const RESPONSE_TYPE = require('../utilities/responseTypes');
+const Comment = require('../model/comments.model');
 const s3 = new AWS.S3({
     accessKeyId: process.env.SECRET_KEY_ID,
     secretAccessKey:process.env.SECRET_ACCESS_KEY_ID
@@ -50,3 +51,31 @@ exports.getSinglePost = (res,id) => {
 
 
 }
+
+exports.getCommentsWithNameRepo = (res,data) => {
+    Comment
+        .find({'post':data})
+        .populate('user','_id name profilepic')
+        .populate('post','postUrl description accessibility comments likes')
+        .then(data => {
+            // console.log(data[0].post.comments.length);
+            // console.log(data[0].post.likes.length);
+            const fullPost = {
+                
+                commentCount:data[0].post.comments.length,
+                likeCount:data[0].post.likes.length,
+                data:data
+            }
+            fullPost.data[0].post.comments = undefined;
+            fullPost.data[0].post.likes = undefined;
+            return RESPONSE_TYPE._200(res,fullPost);
+        })
+        .catch(err => {
+            console.log(err)
+            return RESPONSE_TYPE._400(res,"No post");
+        })
+}
+
+// '_id name profilepic comment likes'
+
+//'postUrl description accessibility'

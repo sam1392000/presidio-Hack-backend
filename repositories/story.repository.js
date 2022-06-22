@@ -32,7 +32,7 @@ exports.getStory = async (res,data) => {
      })
         await Story
              .find()
-             .populate("user")
+             .populate("user","_id name")
              .where('user').in(following_String)             
              .exec()
              .then(data => {

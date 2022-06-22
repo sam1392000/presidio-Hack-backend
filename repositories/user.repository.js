@@ -195,7 +195,7 @@ exports.findFollowersPost = async (res,following) => {
     })
        await Post
             .find({ projection: { postUrl: 1,accessibility:1,comments:1,likes:1,description:1,emailid:0,followers:0,following:0,userid:0} })
-            .populate("user")
+            .populate("user","_id name")
             .where('user').in(following_String)
             .exec()
             .then(data => {

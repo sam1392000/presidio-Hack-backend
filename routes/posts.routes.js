@@ -1,6 +1,6 @@
 const express = require('express')
 
-const {savePost , getPost,likePost} = require("../controller/posts.controller")
+const {savePost , getPost,likePost,getCommentsWithName} = require("../controller/posts.controller")
 
 
 
@@ -12,6 +12,7 @@ router.post('/addpost',savePost)
 
 router.get('/getpost/:id',getPost)
 
+router.get('/getcomments/:id',getCommentsWithName);
 
 
 
