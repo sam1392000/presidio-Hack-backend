@@ -1,6 +1,6 @@
 const formidable = require('formidable');
 
-const { savePostRepo , getSinglePost,likePost} = require('../repositories/post.repository');
+const { savePostRepo , getSinglePost} = require('../repositories/post.repository');
 
 
 const RESPONSE_TYPE = require('../utilities/responseTypes');
@@ -22,10 +22,3 @@ exports.getPost = (req,res) =>{
    return getSinglePost(res,id)
 }
 
-exports.likePost = (req,res) => {
-    if(!req.body)
-        return RESPONSE_TYPE._400(res,"no proper post");
-    
-    return likePost(res,req.body);
-
-}

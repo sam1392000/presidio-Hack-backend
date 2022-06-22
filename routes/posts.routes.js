@@ -13,6 +13,6 @@ router.post('/addpost',savePost)
 router.get('/getpost/:id',getPost)
 
 
-router.post('/likes',likePost)
+
 
 module.exports = router;

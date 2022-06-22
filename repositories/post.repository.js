@@ -36,28 +36,17 @@ exports.getSinglePost = (res,id) => {
         // .populate("user")
         .exec()
         .then(post => {
-            return RESPONSE_TYPE._200(res,post)
+            post.populate("user").then(data => {
+                return RESPONSE_TYPE._200(res,data)
+            })
+            .catch(err => {
+                return RESPONSE_TYPE._400(res,"No use")
+            })
+           
         })
         .catch(err => {
-            return RESPONSE_TYPE._400(res,"No post with this id");
+            return RESPONSE_TYPE._400(res,err);
         })
 
-exports.likePost = async (res,data) => {
-    console.log(data)
-    await Post.findByIdAndUpdate(
-        {_id:data.postid},
-        {$push:{"likes":data.userid}},
-        { new: true, useFindAndModify: false },
-        (err,data) => {
-            if(err){
-                return RESPONSE_TYPE._400(res,{'status':err})
-            }
-            else
-            {
-             return RESPONSE_TYPE._200(res, {'bod':data});
-            }          
-        }
-    )
-    
-}
+
 }

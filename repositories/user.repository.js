@@ -182,6 +182,8 @@ exports.getSingleUser = (res,value) => {
         })
 }
 
+
+
 // exports.Homefeed =  async(res,data) => {
 //     User.findById(data).exec((err,data)=>{
 //         if(err)
