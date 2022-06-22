@@ -38,7 +38,11 @@ exports.getSinglePost = (res,id) => {
         .exec()
         .then(post => {
             post.populate("user").then(data => {
-                return RESPONSE_TYPE._200(res,data)
+                const fullData = {
+                    commentCount:data.comments.length,
+                    likeCount:data.likes.length
+                }
+                return RESPONSE_TYPE._200(res,fullData)
             })
             .catch(err => {
                 return RESPONSE_TYPE._400(res,"No use")
@@ -61,7 +65,6 @@ exports.getCommentsWithNameRepo = (res,data) => {
             // console.log(data[0].post.comments.length);
             // console.log(data[0].post.likes.length);
             const fullPost = {
-                
                 commentCount:data[0].post.comments.length,
                 likeCount:data[0].post.likes.length,
                 data:data
