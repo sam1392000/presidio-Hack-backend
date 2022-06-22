@@ -335,3 +335,29 @@ else{
 ).clone();
 }
 }
+
+exports.getallUser = async (res,data) => {
+    await User
+         .findById(data)
+         .exec()
+         .then(data => {
+              console.log(data.following)
+             var arr =[]
+              arr=data.following
+            
+            //   arr=Object.entries(data.following)
+             // console.log((arr))
+              User
+              .find({_id:{$nin:arr}},{"emailid":1} )
+                           
+               .limit(4)
+               .exec(function(err, posts) {
+      
+               return RESPONSE_TYPE._200(res,posts);
+             });
+             
+         })
+         .catch(err => {
+             return RESPONSE_TYPE._400(res,"No user with this id");
+         })
+ }

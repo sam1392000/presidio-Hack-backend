@@ -33,7 +33,7 @@ exports.deleteStory = async (req,res) => {
     if(!req.body)
         return RESPONSE_TYPE._400(res,"User Not mentioned");
     // console.log(req.params.id);
-    return deleteStory(res,req.params.id);
+    return deleteStory(res,req.body);
 
     // console.log(data.status);
     

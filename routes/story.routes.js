@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/addstory',addStory)
 router.get('/getstory/:id',getStory)
-router.delete('/deletestory/:id',deleteStory)
+router.delete('/deletestory/',deleteStory)
 
 
 module.exports = router;

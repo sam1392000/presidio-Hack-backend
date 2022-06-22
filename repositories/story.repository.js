@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const Story = require('../model/story.model');
-
+const User = require('../model/user.model');
 
 
 const RESPONSE_TYPE = require('../utilities/responseTypes');
@@ -72,12 +72,13 @@ exports.addStoryToDb = async (res,fields,files) => {
 }
 
  exports.deleteStory = async (res,data) => {
-    Story.findAndModify(
-        {
-          query: { user: data},
-          remove: true
-        }
-     ).exec().then(data => {
+   await Story.findOneAndDelete(
+        
+           { user: data.userid,_id:data.storyid},
+         
+        
+     ).exec().then((data) => {
+         console.log(data)
          return RESPONSE_TYPE._200(res,"deleted successfully")
      }).catch(err => {
         return RESPONSE_TYPE._400(res,"No Story...")
