@@ -1,6 +1,6 @@
 const formidable = require('formidable');
 
-const { getStory} = require('../repositories/story.repository');
+const { getStory , addStoryToDb} = require('../repositories/story.repository');
 
 
 const RESPONSE_TYPE = require('../utilities/responseTypes');
@@ -13,4 +13,14 @@ exports.getStory = async (req,res) => {
 
     // console.log(data.status);
     
+}
+
+exports.addStory = (req,res) => {
+    const form = new formidable.IncomingForm();
+    form.parse(req,(err,fields,files) => {
+        if(err || !files || !fields)
+            return RESPONSE_TYPE._400(err,"No story");
+        return addStoryToDb(res,fields,files);
+            
+    })
 }
