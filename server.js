@@ -12,7 +12,7 @@ const commentDdbRoutes = require('./routes/post.ddb.routes')
 
 
 const userddbRoutes = require('./routes/user.ddb.route')
-const storyRoutes = require('./routes/story.route')
+const storyRoutes = require('./routes/story.routes')
 // db Connection
 const db = process.env.DB;
 mongoose.connect(db,{
