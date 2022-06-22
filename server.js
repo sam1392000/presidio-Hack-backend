@@ -12,7 +12,7 @@ const commentDdbRoutes = require('./routes/post.ddb.routes')
 
 
 const userddbRoutes = require('./routes/user.ddb.route')
-
+const storyRoutes = require('./routes/story.route')
 // db Connection
 const db = process.env.DB;
 mongoose.connect(db,{
@@ -36,7 +36,7 @@ app.use('/api',commentRoutes)
 app.use('/ddb',commentDdbRoutes)
 
 app.use('/db',userddbRoutes)
-
+app.use('/api',storyRoutes)
 const PORT  = process.env.PORT || 5000;
 app.listen(PORT , () => {
     console.log(`Server start running at the port ${PORT}`)

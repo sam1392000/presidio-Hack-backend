@@ -22,3 +22,5 @@ exports.getPost = (req,res) =>{
    return getSinglePost(res,id)
 }
 
+
+
