@@ -252,12 +252,13 @@ exports.selfPostslen =  async(res,data) => {
 
 
 exports.likepost =  async(res,data) => {
-   const val= Post.find({_id:data.postid, likes: {"$in": [data.userid]}})
+
+   const val= await Post.find({_id:data.postid, likes: {"$in": [data.userid]}});
     
     if(val.length === 0)
     {
       
-   Post.findByIdAndUpdate(
+        Post.findByIdAndUpdate(
     {_id:data.postid},
     
     
@@ -270,10 +271,11 @@ exports.likepost =  async(res,data) => {
         }
         else
         {
+            console.log("Like ..."+data);
          return RESPONSE_TYPE._200(res, {'bod':data});
         }          
     }
-)
+).clone();
     }
 else{
  Post.findByIdAndUpdate(
@@ -282,13 +284,15 @@ else{
     { new: true, useFindAndModify: false },
     (err,data) => {
         if(err){
+           
             return RESPONSE_TYPE._400(res,{'status':err})
         }
         else
         {
+            console.log("Dislike ..."+data);
          return RESPONSE_TYPE._200(res, {'bod':data});
         }          
     }
-)
+).clone();
 }
 }
