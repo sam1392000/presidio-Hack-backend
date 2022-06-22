@@ -46,9 +46,7 @@ exports.addProfilePic = async (res , data , id) => {
     return RESPONSE_TYPE._400(res,"Profile Picture cannot be updated...")
 }
 
-// TODO
 exports.followUser = async (res,data) => {
-
     console.log(data)
     const fo=data.tofollow
   
@@ -64,7 +62,7 @@ exports.followUser = async (res,data) => {
             }
         }
 
-     )
+     ).clone()
 }
 
 exports.followersFunction =  async(res,data) => {
@@ -195,7 +193,8 @@ exports.findFollowersPost = async (res,following) => {
     })
        await Post
             .find({ projection: { postUrl: 1,accessibility:1,comments:1,likes:1,description:1,emailid:0,followers:0,following:0,userid:0} })
-            .populate("user","_id name")
+            .sort({createdAt: 'desc'})
+            .populate("user","_id name profilepic description")
             .where('user').in(following_String)
             .exec()
             .then(data => {
@@ -341,10 +340,9 @@ exports.getallUser = async (res,data) => {
          .findById(data)
          .exec()
          .then(data => {
-              console.log(data.following)
-             var arr =[]
-              arr=data.following
-            
+            console.log(data.following)
+            var arr =[]
+            arr=data.following
             //   arr=Object.entries(data.following)
              // console.log((arr))
               User
