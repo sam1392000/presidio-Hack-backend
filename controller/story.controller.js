@@ -28,6 +28,7 @@ exports.addStory = (req,res) => {
             
     })
 
+}
 exports.deleteStory = async (req,res) => {
     if(!req.body)
         return RESPONSE_TYPE._400(res,"User Not mentioned");
