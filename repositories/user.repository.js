@@ -85,6 +85,43 @@ exports.followersFunction =  async(res,data) => {
 
    )
 }
+exports.unfollowUser = async (res,data) => {
+
+    console.log(data)
+    const fo=data.tofollow
+  
+    await User.findByIdAndUpdate(
+        {_id:data.userId},
+        {$pull: { following: fo }},
+        { new: true, useFindAndModify: false },
+        (err,data) => {
+            if(err){
+                return {'status':false}
+            }else{
+                 this.unfollowersFunction(res,{userId: fo , tofollow:data._id})
+            }
+        }
+
+     )
+}
+exports.unfollowersFunction =  async(res,data) => {
+    console.log(data)
+    await User.findByIdAndUpdate(
+   {_id:data.userId},
+   {$pull:{"followers":data.tofollow}},
+   { new: true, useFindAndModify: false },
+   (err,data) => {
+       if(err){
+           return RESPONSE_TYPE._400(res,{'status':err})
+       }
+       else
+       {
+        return RESPONSE_TYPE._200(res, {'bod':data});
+       }          
+   }
+
+)
+}
 
 exports.profieDesc =  async(res,data) => {
      User.findById(data).populate("following").populate("followers").exec((err,data)=>{
