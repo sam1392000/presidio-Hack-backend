@@ -14,7 +14,7 @@ router.get('/profile/:id',profileDesc)
 
 
 router.get('/get/user/:name',getSingleUser)
-router.get('/get/ddb',getUserFromDB)
+
 
 router.get('/home/:id',Home)
 router.get('/publicposts/',publicPosts)
