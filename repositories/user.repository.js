@@ -348,8 +348,10 @@ exports.getallUser = async (res,data) => {
             var arr =[]
             arr=data.following
               User
-              .find({_id:{$nin:arr}},{"emailid":1 , "profilepic":1,"name":1} )         
+              .find({_id:{$nin:arr}})
+                      
                .limit(4)
+               
                .exec(function(err, posts) {
                return RESPONSE_TYPE._200(res,posts);
              });
