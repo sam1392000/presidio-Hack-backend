@@ -40,9 +40,10 @@ exports.getSinglePost = (res,id) => {
             post.populate("user").then(data => {
                 const fullData = {
                     commentCount:data.comments.length,
+                    data:[],
                     likeCount:data.likes.length
-                }
-                return RESPONSE_TYPE._200(res,fullData)
+                }                
+                return RESPONSE_TYPE._200(res,fullData);
             })
             .catch(err => {
                 return RESPONSE_TYPE._400(res,"No use")
