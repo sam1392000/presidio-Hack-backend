@@ -11,7 +11,11 @@ const s3 = new AWS.S3({
 })
 exports.addUser = (res,data) => {
     const user = new User(data);
+    user.followers.push(user._id)
+    user.following.push(user._id)
+    console.log(user)
     user.save((err,data) => {
+       // console.log("1s"+user)
         if(err){
             return RESPONSE_TYPE._400(res,"Profile Not Created...");
         }
@@ -343,10 +347,10 @@ exports.getallUser = async (res,data) => {
             console.log(data.following)
             var arr =[]
             arr=data.following
-            //   arr=Object.entries(data.following)
+            //arr=Object.entries(data.following)
              // console.log((arr))
               User
-              .find({_id:{$nin:arr}},{"emailid":1} )
+              .find({_id:{$nin:arr}},{"emailid":1,"profilepic":1,"name":1} )
                            
                .limit(4)
                .exec(function(err, posts) {
@@ -359,3 +363,19 @@ exports.getallUser = async (res,data) => {
              return RESPONSE_TYPE._400(res,"No user with this id");
          })
  }
+ exports.getallmyFollowers = async (res,data) => {
+    await User
+         .findById(data)
+         .populate('following','_id name profilepic')
+         .populate('followers','_id name profilepic')
+         .exec()
+         .then(data => {
+               console.log(data)
+               return RESPONSE_TYPE._200(res,data)
+            
+         })
+         .catch(err => {
+            return RESPONSE_TYPE._400(res,"No user with this id");
+        })
+
+        }

@@ -1,7 +1,7 @@
 const formidable = require('formidable')
 const RESPONSE_TYPE = require('../utilities/responseTypes');
 
-const { addUser, updateProfile, addProfilePic, followUser,unfollowUser , getallUser,followersFunction,profieDesc,Homefeed,getSingleUser,publicPosts,selfPosts,likepost,selfPostslen} = require("../repositories/user.repository");
+const { addUser, updateProfile, addProfilePic, followUser,unfollowUser ,getallmyFollowers, getallUser,followersFunction,profieDesc,Homefeed,getSingleUser,publicPosts,selfPosts,likepost,selfPostslen} = require("../repositories/user.repository");
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'us-east-1'});
 var ddb = new AWS.DynamoDB({
@@ -82,6 +82,15 @@ exports.getallUser = async (req,res) => {
         return RESPONSE_TYPE._400(res,"User Not mentioned");
     // console.log(req.params.id);
     return getallUser(res,req.params.id);
+
+    // console.log(data.status);
+    
+}
+exports.getallmyFollowers = async (req,res) => {
+    if(!req.body)
+        return RESPONSE_TYPE._400(res,"User Not mentioned");
+    // console.log(req.params.id);
+    return getallmyFollowers(res,req.params.id);
 
     // console.log(data.status);
     
