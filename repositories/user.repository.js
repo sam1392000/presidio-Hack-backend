@@ -81,7 +81,7 @@ exports.followersFunction =  async(res,data) => {
            }          
        }
 
-   )
+   ).clone()
 }
 exports.unfollowUser = async (res,data) => {
 
@@ -100,7 +100,7 @@ exports.unfollowUser = async (res,data) => {
             }
         }
 
-     )
+     ).clone()
 }
 exports.unfollowersFunction =  async(res,data) => {
     console.log(data)
@@ -118,7 +118,7 @@ exports.unfollowersFunction =  async(res,data) => {
        }          
    }
 
-)
+).clone()
 }
 
 exports.profieDesc =  async(res,data) => {
@@ -343,14 +343,10 @@ exports.getallUser = async (res,data) => {
             console.log(data.following)
             var arr =[]
             arr=data.following
-            //   arr=Object.entries(data.following)
-             // console.log((arr))
               User
-              .find({_id:{$nin:arr}},{"emailid":1} )
-                           
+              .find({_id:{$nin:arr}},{"emailid":1 , "profilepic":1,"name":1} )         
                .limit(4)
                .exec(function(err, posts) {
-      
                return RESPONSE_TYPE._200(res,posts);
              });
              
