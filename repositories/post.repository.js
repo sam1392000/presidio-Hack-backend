@@ -57,26 +57,32 @@ exports.getSinglePost = (res,id) => {
 
 }
 
-exports.getCommentsWithNameRepo = (res,data) => {
+exports.getCommentsWithNameRepo = (res,dataId) => {
     Comment
-        .find({'post':data})
+        .find({'post':dataId})
         .populate('user','_id name profilepic')
         .populate('post','postUrl description accessibility comments likes')
         .then(data => {
             // console.log(data[0].post.comments.length);
             // console.log(data[0].post.likes.length);
-            const fullPost = {
-                commentCount:data[0].post.comments.length,
-                likeCount:data[0].post.likes.length,
-                data:data
+            console.log(data);
+            if(data.length > 0){
+                const fullPost = {
+                    commentCount:data[0].post.comments.length,
+                    likeCount:data[0].post.likes.length,
+                    data:data
+                }
+                fullPost.data[0].post.comments = undefined;
+                fullPost.data[0].post.likes = undefined;
+                return RESPONSE_TYPE._200(res,fullPost);
+            }else{
+                return this.getSinglePost(res,dataId);
             }
-            fullPost.data[0].post.comments = undefined;
-            fullPost.data[0].post.likes = undefined;
-            return RESPONSE_TYPE._200(res,fullPost);
+           
         })
         .catch(err => {
             console.log(err)
-            return RESPONSE_TYPE._400(res,"No post");
+            return RESPONSE_TYPE._400(res,"No use..")
         })
 }
 
