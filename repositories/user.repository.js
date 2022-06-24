@@ -318,11 +318,11 @@ exports.selfPosts =  async(res,data) => {
     Post.find({user:data})
          .populate("user")
          .exec()
-         .then((err,data)=>{
-            if(err)
+         .then((data)=>{
+            if(data)
             {
                 
-               return RESPONSE_TYPE._200(res,[])
+               return RESPONSE_TYPE._200(res,data)
             }
             else
               { 
@@ -338,7 +338,7 @@ exports.selfPosts =  async(res,data) => {
 
 })
         .catch(err => {
-            return RESPONSE_TYPE._200(res,"No user with this id");
+            return RESPONSE_TYPE._200(res,[]);
         })
           
 }
