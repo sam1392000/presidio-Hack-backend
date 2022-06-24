@@ -24,6 +24,7 @@ exports.addUser = async (res,dataInput) => {
             user.following.push(user._id)
             console.log(user)
             user.save((err,data) => {
+                console.log("comes here")
                 if(err){
                     // console.log(err);
                     return RESPONSE_TYPE._400(res,"Profile Not Created...");
@@ -290,26 +291,56 @@ exports.publicPosts =  async(res,data) => {
        
     })
    }
+// exports.selfPosts =  async(res,data) => {
+   
+//     Post.find({user:data}).populate("user").exec((err,data)=>{
+//                 if(err)
+//                 {
+//                    return RESPONSE_TYPE._400(res,err)
+//                 }
+//                 else
+//                   { 
+//                       const resp={
+//                           followersLength : data[0].user.followers.length,
+//                           followingLength : data[0].user.following.length,
+//                           posts:data.length,                
+//                           actualdata:data
+//                       }
+//                       console.log(resp)
+//                     return RESPONSE_TYPE._200(res,resp)
+//                   }
+
+//    })
+// }
+
 exports.selfPosts =  async(res,data) => {
    
-    Post.find({user:data}).populate("user").exec((err,data)=>{
-                if(err)
-                {
-                   return RESPONSE_TYPE._400(res,err)
-                }
-                else
-                  { 
-                      const resp={
-                          followersLength : data[0].user.followers.length,
-                          followingLength : data[0].user.following.length,
-                          posts:data.length,                
-                          actualdata:data
-                      }
-                      console.log(resp)
-                    return RESPONSE_TYPE._200(res,resp)
+    Post.find({user:data})
+         .populate("user")
+         .exec()
+         .then((err,data)=>{
+            if(err)
+            {
+                
+               return RESPONSE_TYPE._200(res,[])
+            }
+            else
+              { 
+                  const resp={
+                      followersLength : data[0].user.followers.length,
+                      followingLength : data[0].user.following.length,
+                      posts:data.length,                
+                      actualdata:data
                   }
+                  console.log(resp)
+                return RESPONSE_TYPE._200(res,resp)
+              }
 
-   })
+})
+        .catch(err => {
+            return RESPONSE_TYPE._200(res,"No user with this id");
+        })
+          
 }
 exports.selfPostslen =  async(res,data) => {
    
