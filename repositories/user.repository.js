@@ -9,18 +9,43 @@ const s3 = new AWS.S3({
     accessKeyId: process.env.SECRET_KEY_ID,
     secretAccessKey:process.env.SECRET_ACCESS_KEY_ID
 })
-exports.addUser = (res,data) => {
-    const user = new User(data);
-    user.followers.push(user._id)
-    user.following.push(user._id)
-    console.log(user)
-    user.save((err,data) => {
-       // console.log("1s"+user)
-        if(err){
-            return RESPONSE_TYPE._400(res,"Profile Not Created...");
+exports.addUser = async (res,dataInput) => {
+    console.log(dataInput);
+   await User.findOne({userid:dataInput.userid})
+    .exec()
+    .then(data => {
+        if(data){
+            console.log("User already added....")
+            return RESPONSE_TYPE._200(res,data);
+        }else{
+            console.log("User Newly added....")
+            const user = new User(dataInput);
+            user.followers.push(user._id)
+            user.following.push(user._id)
+            console.log(user)
+            user.save((err,data) => {
+                if(err){
+                    // console.log(err);
+                    return RESPONSE_TYPE._400(res,"Profile Not Created...");
+                }
+                return RESPONSE_TYPE._200(res,data)
+            })
+            //  user
+            //     .save()
+            //     .exec()
+            //     .then(data => {
+            //         console.log(data);
+            //         return RESPONSE_TYPE._200(res,data)
+            //     })
+            //     .catch(err => {
+            //         console.log(err)
+            //         return RESPONSE_TYPE._400(res,"Cannot be saved...");
+            //     })
         }
-        return RESPONSE_TYPE._200(res,data)
     })
+
+
+    
 }
 
 exports.updateProfile = (res,data) => {
@@ -31,6 +56,7 @@ exports.updateProfile = (res,data) => {
         (err,user) => {
             if(err)
                 return RESPONSE_TYPE._400(res,"Profile Cannot be updated id doesnt exist")
+            console.log("New User...")
             return RESPONSE_TYPE._200(res,user)
         }
         )
@@ -51,7 +77,7 @@ exports.addProfilePic = async (res , data , id) => {
 }
 
 exports.followUser = async (res,data) => {
-    console.log(data)
+    // console.log(data)
     const fo=data.tofollow
   
     await User.findByIdAndUpdate(
